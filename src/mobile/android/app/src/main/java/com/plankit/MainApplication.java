@@ -1,4 +1,4 @@
-package com.mobile;
+package com.plankit;
 
 import android.app.Application;
 
