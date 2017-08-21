@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import firebase from 'firebase';
-import { Header } from './components/common';
+import { Header, Button, Spinner } from './components/common';
 import LoginForm from './components/LoginForm';
 
 
 class App extends Component {
+
+	state = { loggedIn: null };
 
 	componentWillMount() {
 
@@ -16,14 +18,41 @@ class App extends Component {
 	    	projectId: 'plankit-26637',
 	    	storageBucket: 'plankit-26637.appspot.com',
 	    	messagingSenderId: '868441012056'
-  		});	
+  		});
+
+  		firebase.auth().onAuthStateChanged((user) => {
+  			if (user){
+  				this.setState( { loggedIn: true });
+  			} else {
+  				this.setState( { loggedIn: false });
+  			}
+  		});
+	}
+
+	renderContent(){
+
+		switch (this.state.loggedIn){
+			case true:
+				return(
+					<View style={{height : 50}}>
+						<Button onPress={() => firebase.auth().signOut()}>
+							Log out
+						</Button>
+					</View>
+				)
+			case false:
+				return <LoginForm />
+			default:
+				return <Spinner size="large" />
+
+		}
 	}
 
 	render(){
 		return (
 			<View>
 				<Header headerText="Plankit" />
-				<LoginForm />
+				{this.renderContent()}
 			</View>
 		);
 	}
