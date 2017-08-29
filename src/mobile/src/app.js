@@ -15,7 +15,7 @@ class App extends Component {
 		return (
 
 			<Provider store={createStore(reducers)} >
-				<View>
+				<View style={{flex:1}}>
 					<Header headerText="Plankit" />
 					<LibraryList />
 				</View>
